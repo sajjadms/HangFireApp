@@ -47,7 +47,8 @@ namespace HangFireApp.Controllers
             return View();       
         }
 
-        [AutomaticRetry(Attempts = 20)] //The retry attempt count is limited (10 by default), but you can increase it
+        [Queue("email")]  //place a job into a different queue
+        [AutomaticRetry(Attempts = 5)] //The retry attempt count is limited (10 by default), but you can increase it
         public static void NotifyNewComment(string id)
         {
             // Prepare Postal classes to work outside of ASP.NET request

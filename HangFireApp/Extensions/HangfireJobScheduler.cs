@@ -9,18 +9,29 @@ namespace HangFireApp.Extensions
 {
     public class HangfireJobScheduler
     {
+        [Queue("sms")]
         public void ProcessSMSJobUsingHangfire()
         {
             var smsJobService = new SmsJobService();
             smsJobService.SendPendingSms();
         }
 
+        [Queue("zatca")]
+        public void ProcessZatcaJobUsingHangfire()
+        {
+            var zatcaReportingService = new ZatcaReportingService();
+            zatcaReportingService.ReportPendingInvoices();
+        }
+
+        
         public void ScheduleRecurringJob()
         {
-            string cronExpression = "*/1 * * * *"; // Runs every 1 minutes
+            // Schedule the ProcessSMSJobUsingHangfire method to run every 1 minutes
+            string smsCronExpression = "*/1 * * * *"; // Runs every 1 minutes
+            RecurringJob.AddOrUpdate("process-sms-job", () => ProcessSMSJobUsingHangfire(), smsCronExpression);
 
-            // Schedule the ProcessSMSJobUsingHangfire method to run every 10 minutes
-            RecurringJob.AddOrUpdate("process-sms-job", () => ProcessSMSJobUsingHangfire(), cronExpression);
+            string zatcaCronExpression = "*/1 * * * *"; // Runs every 1 minutes
+            RecurringJob.AddOrUpdate("process-zatca-job", () => ProcessZatcaJobUsingHangfire(), zatcaCronExpression);
         }
     }
 }

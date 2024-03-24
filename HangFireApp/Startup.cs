@@ -22,6 +22,9 @@ namespace HangFireApp
                 .UseSqlServerStorage("Data Source=(local);Initial Catalog=HangfireTest;Integrated Security=True;TrustServerCertificate=True;")
                 .UseFilter(new LogFailureAttribute());
 
+            //Use the same way to limit the number of attempts to the different value.
+            //If you want to change the default global value, add a new global filter:
+            GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 5 });
 
             //Hangfire Server periodically checks the schedule to enqueue scheduled jobs to their queues,
             //allowing workers to execute them. By default, check interval is equal to 15 seconds,
@@ -32,7 +35,12 @@ namespace HangFireApp
             //};
             //yield return new BackgroundJobServer(options);
 
-            yield return new BackgroundJobServer();
+            var options = new BackgroundJobServerOptions
+            {
+                Queues = new[] { "sms", "email", "nphies","zatca" }
+            };
+
+            yield return new BackgroundJobServer(options);
         }
 
         public void Configuration(IAppBuilder app)
