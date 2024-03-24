@@ -1,0 +1,23 @@
+﻿
+
+@{
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="alert alert-success">
+           Email send succesful, you will be redirect to Create Email Page again!
+            </div>
+
+    </div>
+</div>
+
+<script>
+        setTimeout(function() {
+            window.location.href = '@Url.Action("CreateEmail", "Mail")';
+        }, 5000); // 5000 milliseconds = 5 seconds
+</script>
