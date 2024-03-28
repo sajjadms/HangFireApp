@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.SqlServer;
+using HangFireApp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,6 +21,13 @@ namespace HangFireApp
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            HangfireBootstrapper.Instance.Start();
+
+        }
+
+        protected void Application_End(object sender, EventArgs e)
+        {
+            HangfireBootstrapper.Instance.Stop();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using Hangfire.Dashboard;
 using HangFireApp.Extensions;
 using Microsoft.Owin;
 using Owin;
@@ -37,7 +38,7 @@ namespace HangFireApp
 
             var options = new BackgroundJobServerOptions
             {
-                Queues = new[] { "sms", "email", "nphies","zatca" }
+                Queues = new[] { "a_zatca", "b_nphies", "c_sms", "d_email","e_daily","f_clean_up", "g_noshow" }
             };
 
             yield return new BackgroundJobServer(options);
@@ -45,15 +46,32 @@ namespace HangFireApp
 
         public void Configuration(IAppBuilder app)
         {
-            app.UseHangfireAspNet(GetHangfireServers);
-            app.UseHangfireDashboard();
+            //app.UseHangfireAspNet(GetHangfireServers);
+            //app.UseHangfireDashboard();
+
+            //var options = new DashboardOptions
+            //{
+            //    Authorization = new[]{new LocalRequestsOnlyAuthorizationFilter() }
+            //};
+
+            //app.UseHangfireDashboard("/hangfire", options);
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new MyAuthorizationFilter() }
+            });
 
             //// Let's also create a sample background job
-            //BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
+            BackgroundJob.Schedule(() => TestMethod(), TimeSpan.FromMinutes(1));
 
             var jobScheduler = new HangfireJobScheduler();
             jobScheduler.ScheduleRecurringJob();
 
+        }
+
+        [Queue("a_default")]
+        public void TestMethod()
+        {
+            Debug.WriteLine("Hello world from Hangfire!");
         }
     }
 }

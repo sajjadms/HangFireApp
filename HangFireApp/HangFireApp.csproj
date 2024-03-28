@@ -247,8 +247,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailController.cs" />
+    <Compile Include="Extensions\ApplicationPreload.cs" />
+    <Compile Include="Extensions\HangfireBootstrapper.cs" />
     <Compile Include="Extensions\HangfireJobScheduler.cs" />
     <Compile Include="Extensions\LogFailureAttribute.cs" />
+    <Compile Include="Extensions\MyAuthorizationFilter.cs" />
+    <Compile Include="Extensions\ProlongExpirationTimeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

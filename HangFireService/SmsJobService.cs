@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hangfire;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,9 @@ namespace HangFireService
             // and send to sms provider api
 
             //throw new Exception("Failed to send sms");
+
+            //send mail
+            BackgroundJob.Enqueue(() => EmailService.SendEmail());
         }
     }
 }
